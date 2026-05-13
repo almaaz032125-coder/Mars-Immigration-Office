@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MODA — Fashion Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F8F4EF;
+    --black: #0E0E0E;
+    --warm: #C9A87C;
+    --light: #EDE8E1;
+    --gray: #8A8A8A;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* LANGUAGE TOGGLE */
+  .lang-bar {
+    background: var(--black);
+    color: var(--cream);
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+  .lang-bar span { cursor: pointer; opacity: 0.5; transition: opacity 0.2s; margin: 0 8px; }
+  .lang-bar span.active { opacity: 1; border-bottom: 1px solid var(--warm); }
+
+  /* NAVBAR */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--light);
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 6px;
+  }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--black);
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .cart-btn {
+    background: var(--black);
+    color: var(--cream);
+    border: none;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+  .cart-btn:hover { background: var(--warm); }
+  .cart-count {
+    background: var(--warm);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 88vh;
+  }
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+    background: var(--cream);
+  }
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 24px;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+  .hero-title em { font-style: italic; color: var(--warm); }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 380px;
+    margin-bottom: 40px;
+  }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--black);
+    color: var(--cream);
+    border: none;
+    padding: 16px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--warm); }
+  .btn-outline {
+    background: transparent;
+    color: var(--black);
+    border: 1px solid var(--black);
+    padding: 16px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-outline:hover { background: var(--black); color: var(--cream); }
+  .hero-img {
+    background: linear-gradient(135deg, #D4C5B0 0%, #B8A898 50%, #9E8E7E 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-img-placeholder {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px;
+    color: rgba(255,255,255,0.15);
+    font-style: italic;
+  }
+  .hero-social {
+    position: absolute;
+    right: 24px;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .social-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+  }
+  .social-icon:hover { background: var(--warm); border-color: var(--warm); }
+
+  /* SOCIAL BANNER */
+  .social-banner {
+    background: var(--black);
+    color: var(--cream);
+    padding: 20px 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .social-banner p { font-size: 13px; letter-spacing: 1px; opacity: 0.7; }
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--warm);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1px;
+    border: 1px solid var(--warm);
+    padding: 8px 20px;
+    transition: all 0.2s;
+  }
+  .social-link:hover { background: var(--warm); color: var(--black); }
+
+  /* PRODUCTS */
+  .section { padding: 80px 60px; }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+  }
+  .section-sub { font-size: 13px; color: var(--gray); letter-spacing: 1px; }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 32px;
+  }
+  .product-card {
+    cursor: pointer;
+    animation: fadeUp 0.6s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .product-img {
+    aspect-ratio: 3/4;
+    background: var(--light);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-img-inner {
+    font-size: 60px;
+    opacity: 0.2;
+    transition: transform 0.4s ease;
+  }
+  .product-card:hover .product-img-inner { transform: scale(1.1); }
+  .product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--warm);
+    color: white;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    text-transform: uppercase;
+  }
+  .add-to-cart {
+    position: absolute;
+    bottom: -50px;
+    left: 0; right: 0;
+    background: var(--black);
+    color: var(--cream);
+    border: none;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: bottom 0.3s ease, background 0.2s;
+  }
+  .product-card:hover .add-to-cart { bottom: 0; }
+  .add-to-cart:hover { background: var(--warm); }
+  .product-name { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .product-price { font-size: 14px; color: var(--warm); font-weight: 500; }
+  .product-price-cny { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--black);
+    color: var(--cream);
+    padding: 80px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .contact-title em { color: var(--warm); font-style: italic; }
+  .contact-desc { font-size: 14px; line-height: 1.7; opacity: 0.6; margin-bottom: 32px; }
+  .contact-socials { display: flex; gap: 16px; }
+  .contact-social-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    transition: all 0.2s;
+  }
+  .contact-social-btn:hover { border-color: var(--warm); color: var(--warm); }
+
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; }
+  .form-input, .form-textarea {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--cream);
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--warm); }
+  .form-textarea { resize: vertical; min-height: 100px; }
+  .form-input::placeholder, .form-textarea::placeholder { opacity: 0.3; }
+  .submit-btn {
+    background: var(--warm);
+    color: white;
+    border: none;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 8px;
+  }
+  .submit-btn:hover { opacity: 0.85; }
+  .form-success {
+    display: none;
+    color: var(--warm);
+    text-align: center;
+    padding: 20px;
+    border: 1px solid var(--warm);
+    font-size: 14px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    color: var(--cream);
+    padding: 32px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer p { font-size: 12px; opacity: 0.4; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; letter-spacing: 6px; }
+
+  /* CART SIDEBAR */
+  .cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+  .cart-sidebar {
+    position: fixed;
+    right: -420px;
+    top: 0; bottom: 0;
+    width: 400px;
+    background: var(--cream);
+    z-index: 201;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 32px;
+    overflow-y: auto;
+  }
+  .cart-sidebar.open { right: 0; }
+  .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+  .cart-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; }
+  .close-cart { background: none; border: none; font-size: 24px; cursor: pointer; }
+  .cart-empty { text-align: center; color: var(--gray); font-size: 14px; padding: 40px 0; }
+  .cart-items { flex: 1; }
+  .cart-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--light);
+    align-items: center;
+  }
+  .cart-item-img {
+    width: 70px; height: 90px;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .cart-item-price { font-size: 13px; color: var(--warm); }
+  .remove-item { background: none; border: none; color: var(--gray); cursor: pointer; font-size: 18px; }
+  .cart-footer { border-top: 1px solid var(--light); padding-top: 24px; margin-top: 16px; }
+  .cart-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: 500; margin-bottom: 20px; }
+  .checkout-btn {
+    width: 100%;
+    background: var(--black);
+    color: var(--cream);
+    border: none;
+    padding: 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .checkout-btn:hover { background: var(--warm); }
+
+  /* NOTIFICATION */
+  .notif {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--black);
+    color: var(--cream);
+    padding: 14px 28px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    z-index: 300;
+    transition: transform 0.3s ease;
+    border-left: 3px solid var(--warm);
+  }
+  .notif.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-text { padding: 48px 20px; }
+    .hero-img { height: 300px; }
+    .section { padding: 48px 20px; }
+    .contact-section { grid-template-columns: 1fr; padding: 48px 20px; gap: 40px; }
+    footer { padding: 24px 20px; }
+    .cart-sidebar { width: 100%; right: -100%; }
+    .social-banner { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Language Bar -->
+<div class="lang-bar">
+  <span class="active" onclick="setLang('en')" id="en-btn">EN</span>
+  |
+  <span onclick="setLang('zh')" id="zh-btn">中文</span>
+</div>
+
+<!-- Navbar -->
+<nav>
+  <div class="logo">MODA</div>
+  <div class="nav-links">
+    <a href="#products" data-en="Collection" data-zh="系列产品">Collection</a>
+    <a href="#contact" data-en="Contact" data-zh="联系我们">Contact</a>
+    <a href="https://instagram.com" target="_blank" data-en="Instagram" data-zh="Instagram">Instagram</a>
+    <a href="https://tiktok.com" target="_blank" data-en="TikTok" data-zh="TikTok">TikTok</a>
+  </div>
+  <button class="cart-btn" onclick="toggleCart()">
+    🛒 <span data-en="Cart" data-zh="购物车">Cart</span>
+    <span class="cart-count" id="cart-count">0</span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-tag" data-en="New Collection 2026" data-zh="2026年新系列">New Collection 2026</p>
+    <h1 class="hero-title">
+      <span data-en="Style<br>Beyond<br><em>Borders</em>" data-zh="超越<br>国界的<br><em>时尚</em>">Style<br>Beyond<br><em>Borders</em></span>
+    </h1>
+    <p class="hero-sub" data-en="Premium fashion crafted for the modern woman. Free shipping to the USA. Discover pieces that tell your story." data-zh="专为现代女性打造的优质时尚。免费配送至美国。发现属于你的故事。">
+      Premium fashion crafted for the modern woman. Free shipping to the USA. Discover pieces that tell your story.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})" data-en="Shop Now" data-zh="立即购物">Shop Now</button>
+      <a href="#contact" class="btn-outline" data-en="Contact Us" data-zh="联系我们">Contact Us</a>
+    </div>
+  </div>
+  <div class="hero-img">
+    <div class="hero-img-placeholder">M</div>
+    <div class="hero-social">
+      <a href="https://instagram.com" target="_blank" class="social-icon" title="Instagram">
+        <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://tiktok.com" target="_blank" class="social-icon" title="TikTok">
+        <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Social Banner -->
+<div class="social-banner">
+  <p data-en="Follow us for daily drops & styling tips:" data-zh="关注我们，获取每日新品与穿搭灵感：">Follow us for daily drops & styling tips:</p>
+  <a href="https://instagram.com" target="_blank" class="social-link">
+    <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    @MODA_OFFICIAL
+  </a>
+  <a href="https://tiktok.com" target="_blank" class="social-link">
+    <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+    @MODA_TK
+  </a>
+</div>
+
+<!-- Products -->
+<section class="section" id="products">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title" data-en="Featured Collection" data-zh="精选系列">Featured Collection</h2>
+      <p class="section-sub" data-en="Free US Shipping · Easy Returns" data-zh="美国免费配送 · 轻松退换">Free US Shipping · Easy Returns</p>
+    </div>
+  </div>
+  <div class="products-grid" id="products-grid"></div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section" id="contact">
+  <div>
+    <h2 class="contact-title" data-en="Let's<br><em>Connect</em>" data-zh="与我们<br><em>联系</em>">Let's<br><em>Connect</em></h2>
+    <p class="contact-desc" data-en="Questions about orders, shipping to the US, or wholesale inquiries? We reply within 24 hours. Follow us for daily inspiration." data-zh="关于订单、美国配送或批发咨询有疑问？我们24小时内回复。关注我们获取每日灵感。">
+      Questions about orders, shipping to the US, or wholesale inquiries? We reply within 24 hours. Follow us for daily inspiration.
+    </p>
+    <div class="contact-socials">
+      <a href="https://instagram.com" target="_blank" class="contact-social-btn">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Instagram
+      </a>
+      <a href="https://tiktok.com" target="_blank" class="contact-social-btn">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        TikTok
+      </a>
+    </div>
+  </div>
+  <div>
+    <div class="contact-form" id="contact-form">
+      <div class="form-group">
+        <label class="form-label" data-en="Your Name" data-zh="您的姓名">Your Name</label>
+        <input type="text" class="form-input" id="form-name" placeholder="Jane Doe">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-en="Email Address" data-zh="电子邮箱">Email Address</label>
+        <input type="email" class="form-input" id="form-email" placeholder="hello@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-en="Message" data-zh="留言内容">Message</label>
+        <textarea class="form-textarea" id="form-message" placeholder="Tell us about your order or inquiry..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitForm()" data-en="Send Message" data-zh="发送消息">Send Message</button>
+    </div>
+    <div class="form-success" id="form-success">
+      ✓ <span data-en="Message sent! We'll reply within 24 hours." data-zh="消息已发送！我们将在24小时内回复。">Message sent! We'll reply within 24 hours.</span>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">MODA</div>
+  <p data-en="© 2026 MODA Fashion. All rights reserved." data-zh="© 2026 MODA时尚. 保留所有权利。">© 2026 MODA Fashion. All rights reserved.</p>
+  <p data-en="Ships Worldwide · US Free Shipping" data-zh="全球配送 · 美国免费运费">Ships Worldwide · US Free Shipping</p>
+</footer>
+
+<!-- Cart Overlay -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cart-sidebar">
+  <div class="cart-header">
+    <h2 class="cart-title" data-en="Your Cart" data-zh="购物车">Your Cart</h2>
+    <button class="close-cart" onclick="toggleCart()">×</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <p class="cart-empty" data-en="Your cart is empty." data-zh="购物车是空的。">Your cart is empty.</p>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total">
+      <span data-en="Total" data-zh="总计">Total</span>
+      <span id="cart-total-price">$0</span>
+    </div>
+    <button class="checkout-btn" data-en="Proceed to Checkout" data-zh="前往结账">Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- Notification -->
+<div class="notif" id="notif"></div>
+
+<script>
+  // Language
+  let lang = 'en';
+  function setLang(l) {
+    lang = l;
+    document.getElementById('en-btn').classList.toggle('active', l === 'en');
+    document.getElementById('zh-btn').classList.toggle('active', l === 'zh');
+    document.querySelectorAll('[data-en]').forEach(el => {
+      el.innerHTML = el.getAttribute('data-' + l);
+    });
+    renderCart();
+  }
+
+  // Products data
+  const products = [
+    { id:1, emoji:'👗', nameEn:'Silk Wrap Dress', nameZh:'丝绸裹身裙', price:89, cny:648, badge:'New' },
+    { id:2, emoji:'🧥', nameEn:'Linen Blazer', nameZh:'亚麻西装外套', price:112, cny:815, badge:'Best Seller' },
+    { id:3, emoji:'👚', nameEn:'Cotton Knit Top', nameZh:'棉质针织上衣', price:45, cny:328 },
+    { id:4, emoji:'👖', nameEn:'Wide Leg Trousers', nameZh:'阔腿裤', price:75, cny:546, badge:'Sale' },
+    { id:5, emoji:'💍', nameEn:'Gold Ring Set', nameZh:'金戒指套装', price:38, cny:277 },
+    { id:6, emoji:'👜', nameEn:'Mini Shoulder Bag', nameZh:'迷你单肩包', price:65, cny:473, badge:'New' },
+    { id:7, emoji:'🧣', nameEn:'Cashmere Scarf', nameZh:'羊绒围巾', price:55, cny:400 },
+    { id:8, emoji:'👠', nameEn:'Block Heel Mules', nameZh:'方跟穆勒鞋', price:98, cny:714, badge:'Best Seller' },
+  ];
+
+  let cart = [];
+
+  function renderProducts() {
+    const grid = document.getElementById('products-grid');
+    grid.innerHTML = products.map((p, i) => `
+      <div class="product-card" style="animation-delay:${i*0.08}s">
+        <div class="product-img">
+          <div class="product-img-inner">${p.emoji}</div>
+          ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+          <button class="add-to-cart" onclick="addToCart(${p.id})" data-en="Add to Cart" data-zh="加入购物车">Add to Cart</button>
+        </div>
+        <p class="product-name">${lang === 'zh' ? p.nameZh : p.nameEn}</p>
+        <p class="product-price">$${p.price}</p>
+        <p class="product-price-cny">≈ ¥${p.cny}</p>
+      </div>
+    `).join('');
+  }
+
+  function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    const existing = cart.find(i => i.id === id);
+    if (existing) existing.qty++;
+    else cart.push({...product, qty: 1});
+    updateCartCount();
+    showNotif(lang === 'zh' ? `"${product.nameZh}" 已加入购物车` : `"${product.nameEn}" added to cart`);
+    renderCart();
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(i => i.id !== id);
+    updateCartCount();
+    renderCart();
+  }
+
+  function updateCartCount() {
+    document.getElementById('cart-count').textContent = cart.reduce((s, i) => s + i.qty, 0);
+  }
+
+  function renderCart() {
+    const container = document.getElementById('cart-items');
+    const footer = document.getElementById('cart-footer');
+    if (cart.length === 0) {
+      container.innerHTML = `<p class="cart-empty">${lang === 'zh' ? '购物车是空的。' : 'Your cart is empty.'}</p>`;
+      footer.style.display = 'none';
+      return;
+    }
+    footer.style.display = 'block';
+    container.innerHTML = cart.map(item => `
+      <div class="cart-item">
+        <div class="cart-item-img">${item.emoji}</div>
+        <div class="cart-item-info">
+          <p class="cart-item-name">${lang === 'zh' ? item.nameZh : item.nameEn} x${item.qty}</p>
+          <p class="cart-item-price">$${item.price * item.qty}</p>
+        </div>
+        <button class="remove-item" onclick="removeFromCart(${item.id})">×</button>
+      </div>
+    `).join('');
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    document.getElementById('cart-total-price').textContent = `$${total}`;
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-sidebar').classList.toggle('open');
+    document.getElementById('cart-overlay').classList.toggle('open');
+  }
+
+  function showNotif(msg) {
+    const n = document.getElementById('notif');
+    n.textContent = msg;
+    n.classList.add('show');
+    setTimeout(() => n.classList.remove('show'), 2500);
+  }
+
+  function submitForm() {
+    const name = document.getElementById('form-name').value;
+    const email = document.getElementById('form-email').value;
+    const msg = document.getElementById('form-message').value;
+    if (!name || !email || !msg) {
+      showNotif(lang === 'zh' ? '请填写所有字段' : 'Please fill in all fields');
+      return;
+    }
+    document.getElementById('contact-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    setLang(lang);
+  }
+
+  // Init
+  renderProducts();
+  setLang('en');
+</script>
+</body>
+</html>
